@@ -44,7 +44,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name='route',
-    version='2025.2.23.0',
+    version='2025.2.23.1',
     author='Idin K',
     author_email='python@idin.net',
     description='A Python package for generating directory trees',
@@ -53,6 +53,7 @@ setup(
     url='https://github.com/idin/route',
     packages=find_packages(include=['route', 'route.*']),
     license="Conditional Freedom License (CFL-1.0)",
+    license_files='LICENSE',
     install_requires=[
         # List any dependencies your package needs
     ],
