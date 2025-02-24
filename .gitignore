@@ -18,9 +18,11 @@ __pycache__/
 *.swo
 *.DS_Store
 
+*.dist-info/
 *.egg-info/
 /build/
 /dist/
 /venv/
 /env/
 /route.egg-info/
+
