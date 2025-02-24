@@ -7,7 +7,10 @@ import os
 # Define the arguments for the dir function
 dir_path = os.getcwd()
 ignore_ends_with={'.pyc', '.egg-info', '.ipynb'}
-ignore_exact_match={'__init__.py', '__pycache__', '.git', '.idea', '.pytest_cache', '.ipynb_checkpoints', 'build', '.gitignore'}
+ignore_exact_match={
+    '__init__.py', '__pycache__', '.git', '.idea', '.pytest_cache', '.ipynb_checkpoints', 
+    'dist', 'build', '.gitignore'
+}
 specific_prefixes = {
     '* is_root': '🛸',
     '* is_module': '🚀',

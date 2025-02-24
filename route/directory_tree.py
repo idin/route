@@ -3,7 +3,7 @@ from typing import Tuple, Union, Callable, Optional
 from .emoji import is_emoji, pad_emoji_in_string
 from .generate_get_dir_prefix import generate_get_dir_prefix
 from .starts_with import starts_with, ends_with
-
+from .markdownify import markdownify
 
 def get_files_then_folders(
     path: str, ignore_exact_match: set[str],
@@ -119,6 +119,9 @@ def directory_tree(
         ignore_ends_with=ignore_ends_with,
         get_dir_prefix=get_dir_prefix
     )
+    # markdownify the tree
+    if output_file is not None and output_file.lower().endswith('.md'):
+        tree = markdownify(tree)
     if save_to_file:
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(tree)
