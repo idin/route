@@ -46,20 +46,28 @@ def configure_post_install(module_name, function_name):
     PostDevelopCommand.module_name = module_name
     PostDevelopCommand.function_name = function_name 
 
-def get_post_install_command(dir_args=None):
+def get_post_install_command(dir_args=None, **kwargs):
     """
     This function gets the inputs for dir function and produces a post install command.
+    It can accept a dictionary of arguments to pass to the dir function or arguments to pass to the PostInstallCommand class.
     """
+    if dir_args is None:
+        dir_args = kwargs
+
     class CustomPostInstallCommand(PostInstallCommand):
         def __init__(self, *args, **kwargs):
             kwargs['dir_args'] = dir_args or {}
             super().__init__(*args, **kwargs)
     return CustomPostInstallCommand
 
-def get_post_develop_command(dir_args=None):
+def get_post_develop_command(dir_args=None, **kwargs):
     """
     This function gets the inputs for dir function and produces a post develop command.
+    It can accept a dictionary of arguments to pass to the dir function or arguments to pass to the PostDevelopCommand class.
     """
+    if dir_args is None:
+        dir_args = kwargs
+
     class CustomPostDevelopCommand(PostDevelopCommand):
         def __init__(self, *args, **kwargs):
             kwargs['dir_args'] = dir_args or {}

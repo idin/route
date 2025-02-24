@@ -37,7 +37,11 @@ def recursive_draw_directory_tree(
     get_dir_prefix: Callable[[str], str], 
     ignore_exact_match: set[str],
     ignore_starts_with: set[str], 
-    ignore_ends_with: set[str]
+    ignore_ends_with: set[str],
+    dir_connector: str,
+    file_connector: str,
+    empty_prefix: Optional[str] = "    ",
+    prefix_with_pipe: Optional[str] = "│   "
 ) -> str:
     """Recursively generates a simple directory tree with files before folders as a string."""
     
@@ -58,7 +62,8 @@ def recursive_draw_directory_tree(
     for index, (entry, entry_type) in enumerate(sorted_entries):
         entry_path = os.path.join(path, entry)
         is_last = index == len(sorted_entries) - 1
-        connector = "└──" if is_last else "├──"
+        extra_connector = dir_connector if entry_type == 'dir' else file_connector
+        connector = ("└─" if is_last else "├─") + extra_connector
 
         # Apply dir_prefix only to directories
         if entry_type == 'dir':
@@ -72,12 +77,18 @@ def recursive_draw_directory_tree(
             raise ValueError(f"Line is empty: {line}")
 
         if entry_type == 'dir':  # Use type info instead of calling os.path.isdir()
-            new_prefix = prefix + ("    " if is_last else "│   ")
+            new_prefix = prefix + (empty_prefix if is_last else prefix_with_pipe)
             tree = recursive_draw_directory_tree(
                 entry_path, prefix=new_prefix, show_root=False, 
-                is_root=False, connector_padding=connector_padding, get_dir_prefix=get_dir_prefix,
+                is_root=False, connector_padding=connector_padding, 
+                get_dir_prefix=get_dir_prefix,
                 ignore_exact_match=ignore_exact_match,
-                ignore_starts_with=ignore_starts_with, ignore_ends_with=ignore_ends_with
+                ignore_starts_with=ignore_starts_with, 
+                ignore_ends_with=ignore_ends_with,
+                dir_connector=dir_connector,
+                file_connector=file_connector,
+                empty_prefix=empty_prefix,
+                prefix_with_pipe=prefix_with_pipe
             )
             if tree != '':
                 tree_output.append(tree)
@@ -85,9 +96,11 @@ def recursive_draw_directory_tree(
     return "\n".join(tree_output)
 
 def directory_tree(
-    path: str, 
+    path: Optional[str] = None, 
     show_root: Optional[bool] = True, 
-    connector_padding: Optional[str] = ' ', 
+    connector_padding: Optional[str] = ' ',
+    dir_connector: Optional[str] = '─',
+    file_connector: Optional[str] = '─',
     dir_prefix: Optional[str] = "📂", 
     emoji_padding: Optional[Tuple[str, str]] = ('', ' '),
     ignore_exact_match: Optional[set[str]] = None,
@@ -95,9 +108,24 @@ def directory_tree(
     ignore_ends_with: Optional[set[str]] = None, 
     specific_prefixes: Optional[dict[str, Union[str, Callable[[str], bool]]]] = None,
     save_to_file: Optional[bool] = False,
-    output_file: Optional[str] = None
+    output_file: Optional[str] = None,
+    empty_prefix: Optional[str] = "    ",
+    prefix_with_pipe: Optional[str] = "│   "
 ) -> str:
     """Public function to return the directory tree as a string."""
+    if path is None:
+        path = os.getcwd()
+
+    if prefix_with_pipe == 'based_on_connector':
+        prefix_with_pipe = '│' + " " * (2 + len(dir_connector))
+    if empty_prefix == 'based_on_connector':
+        empty_prefix = " " * (3 + len(dir_connector))
+
+    if len(empty_prefix) < len(prefix_with_pipe):
+        empty_prefix = empty_prefix + " " * (len(prefix_with_pipe) - len(empty_prefix))
+    elif len(empty_prefix) > len(prefix_with_pipe):
+        prefix_with_pipe = prefix_with_pipe + " " * (len(empty_prefix) - len(prefix_with_pipe))
+
     ignore_exact_match = ignore_exact_match or set()
     ignore_starts_with = ignore_starts_with or set()
     ignore_ends_with = ignore_ends_with or set()
@@ -117,7 +145,11 @@ def directory_tree(
         ignore_exact_match=ignore_exact_match,
         ignore_starts_with=ignore_starts_with, 
         ignore_ends_with=ignore_ends_with,
-        get_dir_prefix=get_dir_prefix
+        get_dir_prefix=get_dir_prefix,
+        dir_connector=dir_connector,
+        file_connector=file_connector,
+        empty_prefix=empty_prefix,
+        prefix_with_pipe=prefix_with_pipe
     )
     # markdownify the tree
     if output_file is not None and output_file.lower().endswith('.md'):

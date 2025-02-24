@@ -12,7 +12,7 @@ if __name__ == "__main__":
         '* is_root': '🛸'
     }
     tree = directory_tree(
-        path=".", 
+        path="..", 
         ignore_exact_match=ignore_exact_match,
         ignore_starts_with=ignore_starts_with, 
         ignore_ends_with=ignore_ends_with,

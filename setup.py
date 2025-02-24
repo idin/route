@@ -6,7 +6,7 @@ import os
 
 # Define the arguments for the dir function
 dir_path = os.getcwd()
-ignore_ends_with={'.pyc', '.egg-info', '.ipynb'}
+ignore_ends_with={'.pyc', '.egg-info', '.ipynb', '.whl'}
 ignore_exact_match={
     '__init__.py', '__pycache__', '.git', '.idea', '.pytest_cache', '.ipynb_checkpoints', 
     'dist', 'build', '.gitignore'
@@ -28,8 +28,8 @@ dir_args = {
     'output_file': 'DIRECTORY.md'   # This is the name of the file that will be created
 }
 
-post_develop_command = get_post_develop_command(dir_args=dir_args)
-post_install_command = get_post_install_command(dir_args=dir_args)
+post_develop_command = get_post_develop_command(**dir_args)
+post_install_command = get_post_install_command(**dir_args)
 
 """
 The following is the setup.py file for the route package.
