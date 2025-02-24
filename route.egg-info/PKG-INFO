@@ -1,0 +1,21 @@
+Metadata-Version: 2.2
+Name: route
+Version: 2025.2.22.0
+Summary: A Python package for generating directory trees
+Home-page: https://github.com/idin/route
+Author: Idin K
+Author-email: python@idin.net
+License: Conditional Freedom License (CFL-1.0)
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-python
+Dynamic: summary

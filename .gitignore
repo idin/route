@@ -1,10 +1,21 @@
-# Default ignored files
-/shelf/
-/workspace.xml
 # Ignore cache and temporary files
 *.cache
 *.tmp
 *.log
+
+# Ignore IDE and editor directories
 .idea/
-.cursor/
 .vscode/
+.cursor/
+
+# Ignore Python cache directories
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore other common temporary files
+*.swp
+*.swo
+*.DS_Store
+
+*.egg-info/
