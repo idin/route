@@ -1,0 +1,10 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Ignore cache and temporary files
+*.cache
+*.tmp
+*.log
+.idea/
+.cursor/
+.vscode/
