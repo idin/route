@@ -54,6 +54,12 @@ def get_post_install_command(dir_args=None, **kwargs):
     if dir_args is None:
         dir_args = kwargs
 
+    dir_args['save_to_file'] = True
+    if 'path' not in dir_args or dir_args['path'] is None:
+        dir_args['path'] = os.getcwd()
+    if 'output_file' not in dir_args or dir_args['output_file'] is None:
+        dir_args['output_file'] = 'DIRECTORY.md'
+
     class CustomPostInstallCommand(PostInstallCommand):
         def __init__(self, *args, **kwargs):
             kwargs['dir_args'] = dir_args or {}
@@ -67,6 +73,12 @@ def get_post_develop_command(dir_args=None, **kwargs):
     """
     if dir_args is None:
         dir_args = kwargs
+
+    dir_args['save_to_file'] = True
+    if 'path' not in dir_args or dir_args['path'] is None:
+        dir_args['path'] = os.getcwd()
+    if 'output_file' not in dir_args or dir_args['output_file'] is None:
+        dir_args['output_file'] = 'DIRECTORY.md'
 
     class CustomPostDevelopCommand(PostDevelopCommand):
         def __init__(self, *args, **kwargs):

@@ -5,31 +5,29 @@ from route import get_post_develop_command, get_post_install_command
 import os
 
 # Define the arguments for the dir function
-dir_path = os.getcwd()
-ignore_ends_with={'.pyc', '.egg-info', '.ipynb', '.whl'}
-ignore_exact_match={
-    '__init__.py', '__pycache__', '.git', '.idea', '.pytest_cache', '.ipynb_checkpoints', 
-    'dist', 'build', '.gitignore'
-}
-specific_prefixes = {
-    '* is_root': '🛸',
-    '* is_module': '🚀',
-    '* is_test_dir': '🧪',
-    'test': '🧪',
-    'tests': '🧪'
-}
 
 dir_args = {
-    'path': dir_path,
-    'ignore_ends_with': ignore_ends_with,
-    'ignore_exact_match': ignore_exact_match,
-    'specific_prefixes': specific_prefixes,
+    'path': os.getcwd(),
+    'ignore': {
+        'exact_match': {
+            '__init__.py', '__pycache__', '.git', '.idea', '.pytest_cache', 
+            '.ipynb_checkpoints', 'dist', 'build', '.gitignore'
+        },
+        'ends_with': {'.pyc', '.egg-info', '.ipynb', '.whl'}
+    },
+    'specific_prefixes': {
+        '* is_root': '🛸',
+        '* is_module': '🚀',
+        '* is_test_dir': '🧪',
+        'test': '🧪',
+        'tests': '🧪'
+    },
     'save_to_file': True,           # This creates a Markdown file
     'output_file': 'DIRECTORY.md'   # This is the name of the file that will be created
 }
 
-post_develop_command = get_post_develop_command(**dir_args)
-post_install_command = get_post_install_command(**dir_args)
+post_develop_command = get_post_develop_command(dir_args)
+post_install_command = get_post_install_command(dir_args)
 
 """
 The following is the setup.py file for the route package.

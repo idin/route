@@ -1,5 +1,5 @@
 import os
-from typing import Tuple, Union, Callable, Optional
+from typing import Tuple, Union, Callable, Optional, Dict
 from .emoji import is_emoji, pad_emoji_in_string
 from .generate_get_dir_prefix import generate_get_dir_prefix
 from .starts_with import starts_with, ends_with
@@ -103,6 +103,7 @@ def directory_tree(
     file_connector: Optional[str] = '─',
     dir_prefix: Optional[str] = "📂", 
     emoji_padding: Optional[Tuple[str, str]] = ('', ' '),
+    ignore: Optional[Dict[str, set]] = None,
     ignore_exact_match: Optional[set[str]] = None,
     ignore_starts_with: Optional[set[str]] = None, 
     ignore_ends_with: Optional[set[str]] = None, 
@@ -126,9 +127,15 @@ def directory_tree(
     elif len(empty_prefix) > len(prefix_with_pipe):
         prefix_with_pipe = prefix_with_pipe + " " * (len(empty_prefix) - len(prefix_with_pipe))
 
-    ignore_exact_match = ignore_exact_match or set()
-    ignore_starts_with = ignore_starts_with or set()
-    ignore_ends_with = ignore_ends_with or set()
+    if ignore is not None:
+        ignore_exact_match = ignore_exact_match or ignore.get('exact_match', set())
+        ignore_starts_with = ignore_starts_with or ignore.get('starts_with', set())
+        ignore_ends_with = ignore_ends_with or ignore.get('ends_with', set())
+    else:
+        ignore_exact_match = ignore_exact_match or set()
+        ignore_starts_with = ignore_starts_with or set()
+        ignore_ends_with = ignore_ends_with or set()
+
     specific_prefixes = specific_prefixes or {}
 
     dir_prefix = pad_emoji_in_string(string=dir_prefix, padding=emoji_padding)
