@@ -45,13 +45,15 @@ Other customization options are available. See the [Customized Usage](#customize
 ```python
 from route import get_post_develop_command, get_post_install_command
 
-ignore_ends_with={'.pyc', '.egg-info', '.ipynb'}
-ignore_exact_match={
-    '__init__.py', '__pycache__', '.git', '.idea', '.pytest_cache', '.ipynb_checkpoints', 
-    'dist', 'build', '.gitignore'
+ignore = {
+    'exact_match': {
+        '__init__.py', '__pycache__', '.git', '.idea', '.pytest_cache', 
+        '.ipynb_checkpoints', 'dist', 'build', '.gitignore'
+    },
+    'ends_with': {'.pyc', '.egg-info', '.ipynb', '.whl'}
 }
-post_develop_command = get_post_develop_command(ignore_ends_with=ignore_ends_with, ignore_exact_match=ignore_exact_match)
-post_install_command = get_post_install_command(ignore_ends_with=ignore_ends_with, ignore_exact_match=ignore_exact_match)
+post_develop_command = get_post_develop_command(output_file='DIRECTORY.md', ignore=ignore)
+post_install_command = get_post_install_command(output_file='DIRECTORY.md', ignore=ignore)
 ```
 
 Add the following code to the `cmdclass` argument in the `setup` function.
@@ -94,6 +96,8 @@ dir_args = {
     'path': dir_path,
     'ignore_ends_with': ignore_ends_with,
     'ignore_exact_match': ignore_exact_match,
+    'ignore_starts_with': set(),
+    #'ignore': {'ends_with': ignore_ends_with, 'exact_match': ignore_exact_match, 'starts_with': set()}, # <-- alternative way
     'specific_prefixes': specific_prefixes,
     'save_to_file': True,           # This creates a Markdown file
     'output_file': 'DIRECTORY.md'   # This is the name of the file that will be created
